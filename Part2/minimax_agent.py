@@ -24,7 +24,7 @@ class Minimax:
 
 	class minimaxNode:
 		value = None
-		def __init(self, pieceID, moveVal):
+		def __init__(self, pieceID, moveVal):
 			self.pieceID = pieceID
 			self.direction = moveVal
 			self.children = []
@@ -32,7 +32,7 @@ class Minimax:
 	def buildTree(self, boardState, turn, depth):
 		self.turn = turn
 		self.currentBoard = boardState
-		self.root = self.buildTreeSecondary(boardState, turn, depth, None)
+		self.root = self.buildTreeSecondary(boardState, turn, depth, None, None)
 
 	def buildTreeSecondary(self, currentBoard, turn, depth, piece, direction):
 		if depth == 0:
@@ -44,12 +44,12 @@ class Minimax:
 
 		for i in range(currentBoard.size * 2):
 			for move in [LEFT, FORWARD, RIGHT]:
-				result = currentBoard.validAction(i, turn, direction)
+				result = currentBoard.validAction(i, turn, move)
 				if result == INVALID:
 					continue
 
 				newBoard = currentBoard.deepCopy()
-				currentBoard.transition(i, turn, move)
+				newBoard.transition(i, turn, move)
 
 				childNode = self.buildTreeSecondary(newBoard, -1 * turn, depth - 1, i, move)
 				newNode.children.append(childNode)
@@ -75,17 +75,17 @@ class Minimax:
 			childMax = minNum
 
 			for child in currentNode.children:
-				result = self.minimaxValueSecondary(child, dept - 1)
+				result = self.minimaxValueSecondary(child, depth - 1)
 				if result > childMax:
 					childMax = result
 
 			currentNode.value = childMax
 			return childMax
 		else:
-			childMax = minNum
+			childMax = maxNum
 
 			for child in currentNode.children:
-				result = self.minimaxValueSecondary(child, dept - 1)
+				result = self.minimaxValueSecondary(child, depth - 1)
 				if result < childMax:
 					childMax = result
 
