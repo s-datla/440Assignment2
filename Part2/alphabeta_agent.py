@@ -14,6 +14,8 @@ RIGHT = 2
 CAPTURE = 3
 WINCONDITION = 30
 
+
+# Pruning of the Minimax tree using AlphaBeta
 class AlphaBeta:
 	def __init__(self, board, turn, heuristic):
 		self.thisMinimax = minimax_agent.Minimax(heuristic)
@@ -57,6 +59,7 @@ class AlphaBeta:
 
 		return resultNode
 
+	# Top level Alpha-Beta Search
 	def alphaBetaSearch(self, node):
 		child = self.maxValue(node, minNum, maxNum)
 		return [child.pieceID, child.direction]

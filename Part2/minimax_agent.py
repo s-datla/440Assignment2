@@ -14,14 +14,17 @@ RIGHT = 2
 CAPTURE = 3
 WINCONDITION = 30
 
+#  Minimax class: Meant to build a tree instance of Minimax before selecting optimal value for given depth
 class Minimax:
+	# Class constructor.  Meant to indicate heuristic used for evaluation
 	def __init__(self, heuristic):
 		self.root = None
-		self.currentBoard = None
 		self.turn = None
 		self.numExpandedNodes = 0
 		self.heuristic = heuristic
 
+	# Individual nodes of the minimax tree.
+	# Stores details about each specific piece, directions taken to reach this point and its children 
 	class minimaxNode:
 		value = None
 		def __init__(self, pieceID, moveVal):
@@ -29,15 +32,17 @@ class Minimax:
 			self.direction = moveVal
 			self.children = []
 
+	# To be used for building the initial Minimax tree
 	def buildTree(self, boardState, turn, depth):
 		self.turn = turn
-		self.currentBoard = boardState
 		self.root = self.buildTreeSecondary(boardState, turn, depth, None, None)
 
+	# Secondary function that acts as the recursive base case for building a Minimax tree.
+	# 
 	def buildTreeSecondary(self, currentBoard, turn, depth, piece, direction):
 		if depth == 0:
 			retVal = self.minimaxNode(piece, direction)
-			retVal.value = heuristics.evaluateFunction(self.currentBoard, currentBoard, self.turn, self.heuristic)
+			retVal.value = # Heuristic evaluation function
 			return retVal
 
 		newNode = self.minimaxNode(piece, direction)
@@ -56,6 +61,7 @@ class Minimax:
 				self.numExpandedNodes += 1
 		return newNode
 
+	# Used to retrieve best move available based on the Minimax Tree
 	def minimaxValue(self, depth):
 		childMax = minNum
 		move = (None, None)
@@ -67,6 +73,7 @@ class Minimax:
 		self.root.value = childMax
 		return [childMax, move]
 
+	# Similarly to generating the tree, secondary function  that acts as a recursive base case for selecting the best move in the Minimax tree
 	def minimaxValueSecondary(self, currentNode, depth):
 		if depth == 0:
 			return currentNode.value
